@@ -31,7 +31,9 @@ class HomeView extends GetView<HomeController> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed(Routes.PROFILE);
+                    },
                     icon: Icon(
                       Icons.account_circle,
                       size: 32.h,
@@ -55,6 +57,7 @@ class HomeView extends GetView<HomeController> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 15.sp, vertical: 5.sp),
                           child: Post(
+                            isPopUpMenuEnabled: false,
                             model: value.blogs[index],
                           ),
                         );
@@ -69,7 +72,7 @@ class HomeView extends GetView<HomeController> {
             Obx(() {
               if (controller.isLoading.value) {
                 return SizedBox(
-                  height: 50.h,
+                  height: 60.h,
                   child: CircularProgressIndicator.adaptive(),
                 );
               } else {

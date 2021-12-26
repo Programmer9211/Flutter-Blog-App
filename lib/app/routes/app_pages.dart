@@ -8,6 +8,10 @@ import 'package:blog_app/app/modules/home/bindings/home_binding.dart';
 import 'package:blog_app/app/modules/home/views/home_view.dart';
 import 'package:blog_app/app/modules/login/bindings/login_binding.dart';
 import 'package:blog_app/app/modules/login/views/login_view.dart';
+import 'package:blog_app/app/modules/my_blogs/bindings/my_blogs_binding.dart';
+import 'package:blog_app/app/modules/my_blogs/views/my_blogs_view.dart';
+import 'package:blog_app/app/modules/profile/bindings/profile_binding.dart';
+import 'package:blog_app/app/modules/profile/views/profile_view.dart';
 import 'package:blog_app/app/modules/sign_up/bindings/sign_up_binding.dart';
 import 'package:blog_app/app/modules/sign_up/views/sign_up_view.dart';
 import 'package:blog_app/app/modules/upload_blog/bindings/upload_blog_binding.dart';
@@ -50,6 +54,16 @@ class AppPages {
       name: _Paths.BLOG_DETAIL_SCREEN,
       page: () => BlogDetailScreenView(),
       binding: BlogDetailScreenBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROFILE,
+      page: () => ProfileView(),
+      binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.MY_BLOGS,
+      page: () => MyBlogsView(),
+      binding: MyBlogsBinding(),
     ),
   ];
 }

@@ -3,14 +3,17 @@ import 'dart:io';
 import 'package:blog_app/app/data/const.dart';
 import 'package:blog_app/app/data/firebase/firebase_functions.dart';
 import 'package:blog_app/app/data/global_widgets/indicator.dart';
+import 'package:blog_app/app/models/blog_model.dart';
+import 'package:blog_app/app/modules/my_blogs/controllers/my_blogs_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UploadBlogController extends GetxController {
-  final TextEditingController title = TextEditingController();
-  final TextEditingController description = TextEditingController();
+  TextEditingController title = TextEditingController();
+  TextEditingController description = TextEditingController();
   final FirebaseFunctions _functions = FirebaseFunctions();
+  final controller = Get.find<MyBlogsController>();
   File? imageFile;
 
   Future<void> pickImage() async {
@@ -46,5 +49,46 @@ class UploadBlogController extends GetxController {
     } else {
       showAlert("All fields are required");
     }
+  }
+
+  void editBlog(BlogsModel model) async {
+    Indicator.showLoading();
+
+    if (title.text.isNotEmpty && description.text.isNotEmpty) {
+      if (imageFile == null) {
+        Map<String, dynamic> map = {
+          'title': title.text,
+          'description': description.text,
+        };
+
+        await _functions.editBlog(model.id, map).then((value) {
+          showAlert("Blog Updated Sucessfully");
+        });
+      } else {
+        String imageUrl = await _functions.uploadImage(imageFile!);
+
+        Map<String, dynamic> map = {
+          'title': title.text,
+          'description': description.text,
+          'img': imageUrl,
+        };
+
+        await _functions.editBlog(model.id, map).then((value) {
+          showAlert("Blog Updated Sucessfully");
+        });
+      }
+    } else {
+      showAlert("All fields are required");
+    }
+
+    Indicator.closeLoading();
+    updateData();
+  }
+
+  void updateData() {
+    Get.back();
+    controller.myBlogs = [];
+    Indicator.showLoading();
+    controller.getMyBlogData();
   }
 }

@@ -34,6 +34,7 @@ class SignUpView extends GetView<SignUpController> {
               height: 40.h,
             ),
             ReusableTextField(
+              isMultiline: false,
               hintText: "Full Name",
               controller: controller.fullName,
             ),
@@ -41,6 +42,7 @@ class SignUpView extends GetView<SignUpController> {
               height: 20.h,
             ),
             ReusableTextField(
+              isMultiline: false,
               hintText: "Email",
               controller: controller.email,
             ),
@@ -48,6 +50,7 @@ class SignUpView extends GetView<SignUpController> {
               height: 20.h,
             ),
             ReusableTextField(
+              isMultiline: false,
               hintText: "Password",
               controller: controller.password,
             ),

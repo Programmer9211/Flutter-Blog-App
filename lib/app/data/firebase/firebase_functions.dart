@@ -1,13 +1,25 @@
+import 'dart:developer';
+import 'dart:ffi';
+import 'dart:io';
+
 import 'package:blog_app/app/data/const.dart';
 import 'package:blog_app/app/data/global_widgets/indicator.dart';
+import 'package:blog_app/app/models/blog_model.dart';
 import 'package:blog_app/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class FirebaseFunctions {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+  bool _hasMoreData = true;
+  DocumentSnapshot? _lastDocument;
+  int _documentLimit = 15;
+  var isLoading = false.obs;
 
   Future<void> createUserCredential(String name, String email) async {
     try {
@@ -24,6 +36,104 @@ class FirebaseFunctions {
       });
     } catch (e) {
       showAlert(e.toString());
+    }
+  }
+
+  Future<void> uploadBlog(String title, String description, File image) async {
+    try {
+      String id = generateId();
+      DateTime time = DateTime.now();
+
+      String imageUrl = await uploadImage(image);
+
+      Map<String, dynamic> blogDetails = {
+        'id': id,
+        'title': title,
+        'description': description,
+        'img': imageUrl,
+        'time': time,
+      };
+
+      await _firebaseFirestore.collection('blogs').doc(id).set(blogDetails);
+    } catch (e) {
+      showAlert("$e");
+    }
+  }
+
+  Future<String> uploadImage(File file) async {
+    try {
+      String imageName = generateId();
+
+      var refrence = _storage.ref().child("/images").child("/$imageName.jpg");
+
+      var uploadTask = await refrence.putFile(file);
+
+      String url = await uploadTask.ref.getDownloadURL();
+
+      return url;
+    } catch (e) {
+      showAlert("$e");
+      return "";
+    }
+  }
+
+  Future<List<BlogsModel>> getBlogs() async {
+    if (_hasMoreData) {
+      if (!isLoading.value) {
+        try {
+          if (_lastDocument == null) {
+            return await _firebaseFirestore
+                .collection('blogs')
+                .orderBy('time')
+                .limit(_documentLimit)
+                .get()
+                .then((value) {
+              _lastDocument = value.docs.last;
+
+              if (value.docs.length < _documentLimit) {
+                _hasMoreData = false;
+              }
+
+              Indicator.closeLoading();
+
+              return value.docs
+                  .map((e) => BlogsModel.fromJson(e.data()))
+                  .toList();
+            });
+          } else {
+            isLoading.value = true;
+
+            return await _firebaseFirestore
+                .collection("blogs")
+                .orderBy('time')
+                .startAfterDocument(_lastDocument!)
+                .limit(_documentLimit)
+                .get()
+                .then((value) {
+              _lastDocument = value.docs.last;
+
+              if (value.docs.length < _documentLimit) {
+                _hasMoreData = false;
+              }
+
+              isLoading.value = false;
+
+              return value.docs
+                  .map((e) => BlogsModel.fromJson(e.data()))
+                  .toList();
+            });
+          }
+        } catch (e) {
+          showAlert("$e");
+          print(e);
+          return [];
+        }
+      } else {
+        return [];
+      }
+    } else {
+      print("No More Data");
+      return [];
     }
   }
 }

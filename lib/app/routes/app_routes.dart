@@ -12,6 +12,7 @@ abstract class Routes {
   static const BLOG_DETAIL_SCREEN = _Paths.BLOG_DETAIL_SCREEN;
   static const PROFILE = _Paths.PROFILE;
   static const MY_BLOGS = _Paths.MY_BLOGS;
+  static const FAVOURITE = _Paths.FAVOURITE;
 }
 
 abstract class _Paths {
@@ -23,4 +24,5 @@ abstract class _Paths {
   static const BLOG_DETAIL_SCREEN = '/blog-detail-screen';
   static const PROFILE = '/profile';
   static const MY_BLOGS = '/my-blogs';
+  static const FAVOURITE = '/favourite';
 }

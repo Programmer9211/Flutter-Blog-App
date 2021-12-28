@@ -8,6 +8,7 @@ class HomeController extends GetxController {
   final FirebaseFunctions _functions = FirebaseFunctions();
   final ScrollController controller = ScrollController();
   List<BlogsModel> blogs = [];
+  List favouriteList = [];
   var isLoading = false.obs;
 
   void getData() async {
@@ -23,10 +24,15 @@ class HomeController extends GetxController {
     Indicator.showLoading();
   }
 
+  Future<void> getFavouriteList() async {
+    favouriteList = await _functions.getFavouriteList();
+  }
+
   @override
   void onInit() {
     super.onInit();
     getData();
+    getFavouriteList();
     _functions.isLoading.listen((p) {
       isLoading.value = p;
     });

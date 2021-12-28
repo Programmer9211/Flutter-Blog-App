@@ -4,6 +4,8 @@ import 'package:blog_app/app/modules/authentication/bindings/authentication_bind
 import 'package:blog_app/app/modules/authentication/views/authentication_view.dart';
 import 'package:blog_app/app/modules/blog_detail_screen/bindings/blog_detail_screen_binding.dart';
 import 'package:blog_app/app/modules/blog_detail_screen/views/blog_detail_screen_view.dart';
+import 'package:blog_app/app/modules/favourite/bindings/favourite_binding.dart';
+import 'package:blog_app/app/modules/favourite/views/favourite_view.dart';
 import 'package:blog_app/app/modules/home/bindings/home_binding.dart';
 import 'package:blog_app/app/modules/home/views/home_view.dart';
 import 'package:blog_app/app/modules/login/bindings/login_binding.dart';
@@ -64,6 +66,11 @@ class AppPages {
       name: _Paths.MY_BLOGS,
       page: () => MyBlogsView(),
       binding: MyBlogsBinding(),
+    ),
+    GetPage(
+      name: _Paths.FAVOURITE,
+      page: () => FavouriteView(),
+      binding: FavouriteBinding(),
     ),
   ];
 }

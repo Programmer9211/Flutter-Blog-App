@@ -58,6 +58,13 @@ class ProfileView extends GetView<ProfileController> {
               },
             ),
             Tile(
+              title: "Favourite",
+              icon: Icons.favorite_outline_outlined,
+              function: () {
+                Get.toNamed(Routes.FAVOURITE);
+              },
+            ),
+            Tile(
               title: "Log Out",
               icon: Icons.logout,
               function: () {},

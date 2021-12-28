@@ -12,13 +12,34 @@ class BlogDetailScreenView extends GetView<BlogDetailScreenController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.checkIfAlreadyFavourite(model.id);
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              CustomAppBar(title: ""),
+              Obx(() {
+                return CustomAppBar(
+                  title: "",
+                  button: IconButton(
+                    onPressed: () {
+                      if (controller.isAdded.value) {
+                        controller.deleteFromFavourite(model.id);
+                      } else {
+                        controller.addToFavourite(model.id);
+                      }
+                    },
+                    icon: controller.isAdded.value
+                        ? Icon(
+                            Icons.favorite_sharp,
+                            color: Colors.red,
+                          )
+                        : Icon(Icons.favorite_outline_outlined),
+                  ),
+                );
+              }),
               SizedBox(
                 height: 10.h,
               ),

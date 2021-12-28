@@ -220,4 +220,47 @@ class FirebaseFunctions {
       showAlert("$e");
     }
   }
+
+  Future<void> addToFavourite(String id) async {
+    try {
+      await _firebaseFirestore
+          .collection("users")
+          .doc(_auth.currentUser!.uid)
+          .collection('favourite')
+          .doc(id)
+          .set({
+        'id': id,
+      });
+    } catch (e) {
+      showAlert("$e");
+    }
+  }
+
+  Future<List> getFavouriteList() async {
+    try {
+      var querySnapshot = await _firebaseFirestore
+          .collection('users')
+          .doc(_auth.currentUser!.uid)
+          .collection('favourite')
+          .get();
+
+      return querySnapshot.docs.map((e) => e.data()['id']).toList();
+    } catch (e) {
+      showAlert("$e");
+      return [];
+    }
+  }
+
+  Future<void> deleteFromFavorite(String id) async {
+    try {
+      await _firebaseFirestore
+          .collection('users')
+          .doc(_auth.currentUser!.uid)
+          .collection('favourite')
+          .doc(id)
+          .delete();
+    } catch (e) {
+      showAlert("$e");
+    }
+  }
 }

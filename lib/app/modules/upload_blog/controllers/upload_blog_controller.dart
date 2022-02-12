@@ -13,7 +13,6 @@ class UploadBlogController extends GetxController {
   TextEditingController title = TextEditingController();
   TextEditingController description = TextEditingController();
   final FirebaseFunctions _functions = FirebaseFunctions();
-  final controller = Get.find<MyBlogsController>();
   File? imageFile;
 
   Future<void> pickImage() async {
@@ -87,8 +86,12 @@ class UploadBlogController extends GetxController {
 
   void updateData() {
     Get.back();
-    controller.myBlogs = [];
-    Indicator.showLoading();
-    controller.getMyBlogData();
+    if (Get.isRegistered<MyBlogsController>()) {
+      final controller = Get.find<MyBlogsController>();
+
+      controller.myBlogs = [];
+      Indicator.showLoading();
+      controller.getMyBlogData();
+    }
   }
 }

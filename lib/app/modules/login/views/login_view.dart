@@ -34,6 +34,7 @@ class LoginView extends GetView<LoginController> {
             height: 40.h,
           ),
           ReusableTextField(
+            isMultiline: false,
             hintText: "Email",
             controller: controller.email,
           ),
@@ -41,6 +42,7 @@ class LoginView extends GetView<LoginController> {
             height: 20.h,
           ),
           ReusableTextField(
+            isMultiline: false,
             hintText: "Password",
             controller: controller.password,
           ),

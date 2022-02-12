@@ -8,6 +8,11 @@ abstract class Routes {
   static const LOGIN = _Paths.LOGIN;
   static const SIGN_UP = _Paths.SIGN_UP;
   static const AUTHENTICATION = _Paths.AUTHENTICATION;
+  static const UPLOAD_BLOG = _Paths.UPLOAD_BLOG;
+  static const BLOG_DETAIL_SCREEN = _Paths.BLOG_DETAIL_SCREEN;
+  static const PROFILE = _Paths.PROFILE;
+  static const MY_BLOGS = _Paths.MY_BLOGS;
+  static const FAVOURITE = _Paths.FAVOURITE;
 }
 
 abstract class _Paths {
@@ -15,4 +20,9 @@ abstract class _Paths {
   static const LOGIN = '/login';
   static const SIGN_UP = '/sign-up';
   static const AUTHENTICATION = '/authentication';
+  static const UPLOAD_BLOG = '/upload-blog';
+  static const BLOG_DETAIL_SCREEN = '/blog-detail-screen';
+  static const PROFILE = '/profile';
+  static const MY_BLOGS = '/my-blogs';
+  static const FAVOURITE = '/favourite';
 }
